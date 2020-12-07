@@ -1,5 +1,5 @@
 # nextcloud with OnlyOffice in Docker
-## Only Office
+# Only Office
 For quite some time there has been a built-in community server of OnlyOffice, OO, for processing office documents. It doesn't work properly and is also a bit sluggish. Therefore I have created some workaraounds, which will be discussed at the end. To make things stop, I installed an independent server via *Docker*, where I also encountered some problems, which will be mentioned in the following chapter.
 
 During the research and through comments from commentators two different ways to install the Docker server were approached:
@@ -7,7 +7,7 @@ During the research and through comments from commentators two different ways to
 - Docker Server, which can be accessed via a reverse proxy through NGINX. No further port needs to be released for this, however, another LE certificate must be created.
 
 **Both variants are equally secure if the additional port in the router will be ignored.** So it remains the personal preference, which variant is chosen.
-### Docker Server - directly accessible
+## Docker Server - directly accessible
 It was not quite satisfactory and also the community version was a bit behind the current version and so first [Docker installed](https://docs.docker.com/engine/install/debian/ "Official Docker documentation with installation under Debian") and then the [Docker server installed](https://helpcenter.onlyoffice.com/server/docker/document/docker-installation.aspx "Official documentation of OnlyOffice with the Docker installation").
 
 But this was the beginning of the problems:
@@ -48,7 +48,7 @@ The 'cat' command is particularly sensitive in terms of rights. So if this does 
 
 If this fails, the setup in the cloud will also fail. Read the error message from 'wget' and do it. Often it is due to the missing chain and 'cat' because the LE certificate is for a different domain.
 
-### Docker Server - Reverse Proxy
+## Docker Server - Reverse Proxy
 Here too, the reasons and problems were the same in this version, whereby 2. could be omitted, since HTTPS is via the same port. However,documents could not be loaded as quickly with this version as with the other version. It is only milliseconds, but it was noticeable.
 
 Here is the recommendation for setting up the Docker Container:
@@ -66,7 +66,7 @@ Especially the last point is very important, otherwise the container will not ru
 
 If you want to run several OO-servers for different clouds, just create a new container and assign a new name and port. I have not yet tested a server for several clouds.
 
-#### Setting up the reverse proxy with NGINX
+### Setting up the reverse proxy with NGINX
 In order for the OO server to be accessible, the reverse proxy must be set up in NGINX. There are also [instructions for Apache](https://arnowelzel.de/en/onlyoffice-in-nextcloud-the-current-status "Thank you for the link!"), but I haven't tested them because I use NGINX.
 
 The setup consists of three steps:
@@ -136,7 +136,7 @@ Finally adjust the Conf to the reverse proxy. You have to add a 'location' secti
 - With 'proxy_pass' you have to enter the same address including port as the docker was used before.
 - In the official documentation of NGINX it is mentioned that the `if` rule for redirect is not recommended. It is better to use the `return 301`. Therefore it was commented out and added below.
 
-##### setup in the cloud
+## Setting up the cloud
 Afterwards the cloud has to be set up. In the OnlyOffice app the fields are filled in as follows, which is the same for both variants:
 
 - service address: Address of the cloud with the port of the container behind it -> *https://domain.der.cloud:lokaler_Port* or *https://eine.eindeutige.domain*
@@ -160,7 +160,7 @@ Especially 'verify_peer_off' is mentioned very often.
 
 If `jwt_secret` is used, this is automatically written into the field *secret key* in the setting. Everything else was not obvious to me
 
-#### Renewing the certificates within the container
+### Renewing the certificates within the container
 The certificates of LE expire after 90 days. Therefore the files must be exchanged within the container. A script is sufficient for this:
 >
 	#!/bin/bash
