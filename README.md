@@ -1,6 +1,6 @@
 # nextcloud with OnlyOffice in Docker
 ## Only Office
-For quite some time there has been a built-in community server of OnlyOffice for processing office documents. It doesn't work properly and is also a bit sluggish. Therefore I have created some workaraounds, which will be discussed at the end. To make things stop, I installed an independent server via *Docker*, where I also encountered some problems, which will be mentioned in the following chapter.
+For quite some time there has been a built-in community server of OnlyOffice, OO, for processing office documents. It doesn't work properly and is also a bit sluggish. Therefore I have created some workaraounds, which will be discussed at the end. To make things stop, I installed an independent server via *Docker*, where I also encountered some problems, which will be mentioned in the following chapter.
 
 During the research and through comments from commentators two different ways to install the Docker server were approached:
 - Docker Server, which is directly accessible from the net and therefore a port in the router has to be released. However, no further LE certificate needs to be created here.
