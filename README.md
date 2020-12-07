@@ -102,8 +102,8 @@ Finally adjust the Conf to the reverse proxy. You have to add a 'location' secti
 
         location / {
                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header host $http_host;
-                proxy_set_header X-forwarded protocol https;
+                proxy_set_header Host $http_host;
+                proxy_set_header X-Forwarded-Proto https;
                 proxy_redirect off;
                 proxy_pass http://127.0.0.1:lokaler_Port;
                 proxy_http_version 1.1;
