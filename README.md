@@ -24,7 +24,7 @@ In the internet there was a tutorial for the setup with LE, but it did not reall
 **Important:**
 
 - *name* must be written in "".
-- A free local port must be used. This must also be enabled in the firewall (e.g. 'upw') and the router.
+- A free local port must be used. This must also be enabled in the firewall (e.g. 'ufw') and the router.
 - *BEFORE* each new argument must be a `\` and then NO space
 - The arguments for the two 'JWDs' must be in "".
 
@@ -34,14 +34,14 @@ Afterwards you have to create the directories for the `certs` and everything not
 
 Furthermore the existing certificates of LE must be copied into the directory of the container:
 >
-    cd /app/onlyoffice/DocumentServer/data/certs/
-    cp -L /etc/letsencrypt/live/a.domain/cert.pem onlyoffice.crt
-    cp -L /etc/letsencrypt/live/a.domain/privkey.pem onlyoffice.key
+	cd /app/onlyoffice/DocumentServer/data/certs/
+	cp -L /etc/letsencrypt/live/a.domain/cert.pem onlyoffice.crt
+	cp -L /etc/letsencrypt/live/a.domain/privkey.pem onlyoffice.key
 
 and the rights adjusted '444' and the correct owner and group are changed according to the parent directories!! The latter is especially important, because otherwise the following thing will not work and the page view will not work. The chain must still be added:
 >
-    wget https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem.txt
-    cat lets-encrypt-x3-cross-signed.pem.txt>>onlyoffice.crt
+	wget https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem.txt
+	cat lets-encrypt-x3-cross-signed.pem.txt>>onlyoffice.crt
 
 The 'cat' command is particularly sensitive in terms of rights. So if this does not work, just check the rights of the `onlyoffice.crt`. If everything works, the test, if the server is running by calling the port *local_port* should work with the domain of the certificate. In addition, it should be checked whether the 'index.html' can be called up, as this is important for the communication between the cloud and the OO server:
 > wget https://eine.domain:lokaler_Port
@@ -76,60 +76,60 @@ The setup consists of three steps:
 
 For normal accessibility with port 80 just write a normal Conf for NGINX. There you can take everything that is there at the moment:
 >
-    server {
-        list 80;
-        listen [::]:80;
+	server {
+		listen 80;
+		listen [::]:80;
 
-        server_name a.unique.domain;
+		server_name a.unique.domain;
 
-        access_log /var/log/nginx/your-access_log;
-        error_log /var/log/nginx/your-error_log crit;
+		access_log /var/log/nginx/your-access_log;
+		error_log /var/log/nginx/your-error_log crit;
 
-        root /var/www/html;
-        index index.html index.htm index.nginx-debian.html
-    }
+		root /var/www/html;
+		index index.html index.htm index.nginx-debian.html
+	}
 
 The Certbot can then be run. If '---nginx' is given as an option, the corresponding changes are taken over.
 
 Finally adjust the Conf to the reverse proxy. You have to add a 'location' section with the proxy pass information. These are a little more complex if the actual domain is accessible via HTTPS. I have listed the complete Conf here to show you the changes Certbot has made:
 >
-    server {
+	server {
 
-        server_name a.unique.domain;
+		server_name a.unique.domain;
+		
+		access_log /var/log/nginx/your-access_log;
+		error_log /var/log/nginx/your-error_log crit;
 
-        access_log /var/log/nginx/your-access_log;
-        error_log /var/log/nginx/your-error_log crit;
+		location / {
+			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+			proxy_set_header Host $http_host;
+			proxy_set_header X-Forwarded-Proto https;
+			proxy_redirect off;
+			proxy_pass http://127.0.0.1:lokaler_Port;
+			proxy_http_version 1.1;
+		}
 
-        location / {
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header Host $http_host;
-                proxy_set_header X-Forwarded-Proto https;
-                proxy_redirect off;
-                proxy_pass http://127.0.0.1:lokaler_Port;
-                proxy_http_version 1.1;
-        }
-
-        listen [:::]:443 ssl http2; # managed by Certbot
-        listen 443 ssl; # managed by Certbot
-        ssl_certificate /etc/letsencrypt/live/a.unique.domain/fullchain.pem; # managed by Certbot
-        ssl_certificate_key /etc/letsencrypt/live/a.unique.domain/privkey.pem; # managed by Certbot
-        include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
-    }
+		listen [:::]:443 ssl http2; # managed by Certbot
+		listen 443 ssl; # managed by Certbot
+		ssl_certificate /etc/letsencrypt/live/a.unique.domain/fullchain.pem; # managed by Certbot
+		ssl_certificate_key /etc/letsencrypt/live/a.unique.domain/privkey.pem; # managed by Certbot
+		include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+		ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+	}
 >
-    server {
-    # if ($host = a.unique.domain) {
-    # return 301 https://$host$request_uri;
-    # } # managed by Certbot
+	server {
+	# if ($host = a.unique.domain) {
+	# return 301 https://$host$request_uri;
+	# } # managed by Certbot
 
-        list 80;
-        listen [::]:80;
+		listen 80;
+		listen [::]:80;
 
-        server_name a.unique.domain;
-        return 404; # managed by Certbot
+		server_name a.unique.domain;
+		return 404; # managed by Certbot
 
-        return 301 https://$server_name$request_uri;
-    }
+		return 301 https://$server_name$request_uri;
+	}
 
 **Important:**
 
@@ -149,12 +149,12 @@ Then click on "Save" and the matter should be clear without changes.
 In the internet some more things were found, which should help to solve problems. These were no longer necessary after the correct docker configuration. But I would like to list them here for the sake of completeness:
 In the 'config.php' in the cloud the following things can be added individually or in combination:
 >
-    'onlyoffice' => 
-    array(
-        'jwt_secret' => 'secret_secret',
-        'jwt_header' => 'Authorization',
-        'verify_peer_off' => TRUE,
-    ),
+	'onlyoffice' => 
+	array(
+		'jwt_secret' => 'secret_secret',
+		'jwt_header' => 'Authorization',
+		'verify_peer_off' => TRUE,
+	),
 
 Especially 'verify_peer_off' is mentioned very often.
 
@@ -163,11 +163,11 @@ If `jwt_secret` is used, this is automatically written into the field *secret ke
 #### Renewing the certificates within the container
 The certificates of LE expire after 90 days. Therefore the files must be exchanged within the container. A script is sufficient for this:
 >
-    #!/bin/bash
-    cp /etc/letsencrypt/live/a.domain/fullchain.pem /app/onlyoffice/DocumentServer/data/certs/onlyoffice.crt
-    cp /etc/letsencrypt/live/a.domain/privkey.pem /app/onlyoffice/DocumentServer/data/certs/onlyoffice.key
-    chmod 400 /app/onlyoffice/DocumentServer/data/certs/onlyoffice.key
-    docker container restart docker_name
+	#!/bin/bash
+	cp /etc/letsencrypt/live/a.domain/fullchain.pem /app/onlyoffice/DocumentServer/data/certs/onlyoffice.crt
+	cp /etc/letsencrypt/live/a.domain/privkey.pem /app/onlyoffice/DocumentServer/data/certs/onlyoffice.key
+	chmod 400 /app/onlyoffice/DocumentServer/data/certs/onlyoffice.key
+	docker container restart docker_name
 
 This then only needs to be processed via Cron:
 > 2 */12 * * * root /bin/bash --login /path/to/script.sh > /dev/null 2>
