@@ -59,8 +59,8 @@ Here is the recommendation for setting up the Docker Container:
 **Important:**
 
 - *name* must be written in "".
-- A free local port must be used.This must also be enabled in the firewall (e.g. 'ufw').
-- The arguments for the two 'JWD' must be in "".
+- A free local port must be used.This must also be enabled in the firewall (e.g. 'ufw') and it must be written before the ':80'.
+- The arguments for the two 'JWT' must be in "".
 
 Especially the last point is very important, otherwise the container will not run correctly and the cloud will deliver an error message. Googling this error message does NOT help. You get many hits, but no real help.
 
