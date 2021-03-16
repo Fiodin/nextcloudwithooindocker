@@ -19,7 +19,7 @@ But this was the beginning of the problems:
 In the internet there was a tutorial for the setup with LE, but it did not really work. Here is the command for setting up the docker container:
 >sudo docker pull onlyoffice/documentserver
 
->sudo docker run -i -t -d --name="uniquername" -p local_port:443 \--restart=always \-v /app/onlyoffice/DocumentServer/logs: /var/log/onlyoffice \-v /app/onlyoffice/DocumentServer/data:/var/www/onlyoffice/Data \-v /app/onlyoffice/DocumentServer/lib:/var/lib/onlyoffice \-e JWT_ENABLED="true \-e JWT_SECRET="geheimes_secret" onlyoffice/documentserver
+>sudo docker run -i -t -d --name="uniquername" -p local_port:443 \--restart=always \-v /app/onlyoffice/DocumentServer/logs: /var/log/onlyoffice \-v /app/onlyoffice/DocumentServer/data:/var/www/onlyoffice/Data \-v /app/onlyoffice/DocumentServer/lib:/var/lib/onlyoffice \-e JWT_ENABLED="true" \-e JWT_SECRET="geheimes_secret" onlyoffice/documentserver
 
 **Important:**
 
