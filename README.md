@@ -26,8 +26,8 @@ In the internet there was a tutorial for the setup with LE, but it did not reall
 - *name* must be written in "".
 - A free local port must be used. This must also be enabled in the firewall (e.g. 'ufw') and the router.
 - *BEFORE* each new argument must be a `\` and then NO space
-- The arguments for the two ´JWDs´ must be in "".
-- The ´JWT_SECRET´ should not include any quotation marks e.g. ´"´ or ´'´. Otherwise, Docker interprets this as the end of the string and then Nextcloud will break up with the passphrase.
+- The arguments for the two `JWDs` must be in "".
+- The `JWT_SECRET` should not include any quotation marks e.g. `"` or `'`. Otherwise, Docker interprets this as the end of the string and then Nextcloud will break up with the passphrase.
 
 Especially the last two points are very important, otherwise the container will not run correctly and the cloud will deliver an error message. Googling this error message does NOT help.
 
@@ -39,7 +39,7 @@ Furthermore the existing certificates of LE must be copied into the directory of
 	cp -L /etc/letsencrypt/live/a.domain/cert.pem onlyoffice.crt
 	cp -L /etc/letsencrypt/live/a.domain/privkey.pem onlyoffice.key
 
-and the rights adjusted '444' and the correct owner and group are changed according to the parent directories!! The latter is especially important, because otherwise the following thing will not work and the page view will not work. The chain must still be added:
+and the rights adjusted `444` and the correct owner and group are changed according to the parent directories!! The latter is especially important, because otherwise the following thing will not work and the page view will not work. The chain must still be added:
 >
 	wget https://letsencrypt.org/certs/lets-encrypt-x3-cross-signed.pem.txt
 	cat lets-encrypt-x3-cross-signed.pem.txt>>onlyoffice.crt
@@ -61,8 +61,8 @@ Here is the recommendation for setting up the Docker Container:
 
 - *name* must be written in "".
 - A free local port must be used.This must also be enabled in the firewall (e.g. ´ufw´) and it must be written before the ´:80´.
-- The arguments for the two ´JWT´ must be in "".
-- The ´JWT_SECRET´ should not include any quotation marks e.g. ´"´ or ´'´. Otherwise, Docker interprets this as the end of the string and then Nextcloud will break up with the passphrase.
+- The arguments for the two `JWT` must be in "".
+- The `JWT_SECRET` should not include any quotation marks e.g. `"` or `'`. Otherwise, Docker interprets this as the end of the string and then Nextcloud will break up with the passphrase.
 
 Especially the last point is very important, otherwise the container will not run correctly and the cloud will deliver an error message. Googling this error message does NOT help. You get many hits, but no real help.
 
@@ -91,9 +91,9 @@ For normal accessibility with port 80 just write a normal Conf for NGINX. There 
 		index index.html index.htm index.nginx-debian.html
 	}
 
-The Certbot can then be run. If ´--nginx´ is given as an option, the corresponding changes are taken over.
+The Certbot can then be run. If `--nginx` is given as an option, the corresponding changes are taken over.
 
-Finally adjust the Conf to the reverse proxy. You have to add a ´location´ section with the proxy pass information. These are a little more complex if the actual domain is accessible via HTTPS. I have listed the complete Conf here to show you the changes Certbot has made:
+Finally adjust the Conf to the reverse proxy. You have to add a `location` section with the proxy pass information. These are a little more complex if the actual domain is accessible via HTTPS. I have listed the complete Conf here to show you the changes Certbot has made:
 >
 	server {
 
@@ -135,14 +135,14 @@ Finally adjust the Conf to the reverse proxy. You have to add a ´location´ sec
 
 **Important:**
 
-- With 'proxy_pass' you have to enter the same address including port as the docker was used before.
+- With `proxy_pass` you have to enter the same address including port as the docker was used before.
 - In the official documentation of NGINX it is mentioned that the `if` rule for redirect is not recommended. It is better to use the `return 301`. Therefore it was commented out and added below.
 
 ## Setting up the cloud
 Afterwards the cloud has to be set up. In the OnlyOffice app the fields are filled in as follows, which is the same for both variants:
 
 - service address: Address of the cloud with the port of the container behind it -> *https://domain.der.cloud:lokaler_Port* or *https://eine.eindeutige.domain*
-- Secret key: The secret secret from the above 'JWT_SECRET'.
+- Secret key: The secret secret from the above `JWT_SECRET`.
 - Under "Advanced server settings": Service address of the document processing for internal requests from the server: The same as before for the service address
 - Under "Advanced server settings": Server address for internal requests from the document processing service: The address of the cloud as it can be reached normally.
 
@@ -158,7 +158,7 @@ In the 'config.php' in the cloud the following things can be added individually 
 		'verify_peer_off' => TRUE,
 	),
 
-Especially 'verify_peer_off' is mentioned very often.
+Especially `verify_peer_off` is mentioned very often.
 
 If `jwt_secret` is used, this is automatically written into the field *secret key* in the setting. Everything else was not obvious to me
 
