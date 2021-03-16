@@ -26,7 +26,7 @@ In the internet there was a tutorial for the setup with LE, but it did not reall
 - *name* must be written in "".
 - A free local port must be used. This must also be enabled in the firewall (e.g. 'ufw') and the router.
 - *BEFORE* each new argument must be a `\` and then NO space
-- The arguments for the two `JWDs` must be in "".
+- The arguments for the two `JWTs` must be in "".
 - The `JWT_SECRET` should not include any quotation marks e.g. `"` or `'`. Otherwise, Docker interprets this as the end of the string and then Nextcloud will break up with the passphrase.
 
 Especially the last two points are very important, otherwise the container will not run correctly and the cloud will deliver an error message. Googling this error message does NOT help.
@@ -61,7 +61,7 @@ Here is the recommendation for setting up the Docker Container:
 
 - *name* must be written in "".
 - A free local port must be used.This must also be enabled in the firewall (e.g. ´ufw´) and it must be written before the ´:80´.
-- The arguments for the two `JWT` must be in "".
+- The arguments for the two `JWTs` must be in "".
 - The `JWT_SECRET` should not include any quotation marks e.g. `"` or `'`. Otherwise, Docker interprets this as the end of the string and then Nextcloud will break up with the passphrase.
 
 Especially the last point is very important, otherwise the container will not run correctly and the cloud will deliver an error message. Googling this error message does NOT help. You get many hits, but no real help.
